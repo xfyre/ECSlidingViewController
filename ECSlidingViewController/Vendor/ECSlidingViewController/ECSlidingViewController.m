@@ -330,6 +330,13 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 
 - (void)anchorTopViewTo:(ECSide)side animations:(void (^)())animations onComplete:(void (^)())complete
 {
+    if (self.shouldUseNativeSnapshotFeature && ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)) {
+        self.topViewSnapshot = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
+        [self.topViewSnapshot setAutoresizingMask:self.autoResizeToFillScreen];
+        [self.topViewSnapshot addGestureRecognizer:self.resetTapGesture];
+    }
+    [self addTopViewSnapshot];
+
     CGFloat newCenter = self.topView.center.x;
     
     if (side == ECLeft) {
@@ -363,7 +370,6 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
         }
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, view);
         _topViewIsOffScreen = NO;
-        [self addTopViewSnapshot];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *key = (side == ECLeft) ? ECSlidingViewTopDidAnchorLeft : ECSlidingViewTopDidAnchorRight;
             [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];
@@ -378,6 +384,13 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 
 - (void)anchorTopViewOffScreenTo:(ECSide)side animations:(void(^)())animations onComplete:(void(^)())complete
 {
+    if (self.shouldUseNativeSnapshotFeature && ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)) {
+        self.topViewSnapshot = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
+        [self.topViewSnapshot setAutoresizingMask:self.autoResizeToFillScreen];
+        [self.topViewSnapshot addGestureRecognizer:self.resetTapGesture];
+    }
+    [self addTopViewSnapshot];
+
     CGFloat newCenter = self.topView.center.x;
     
     if (side == ECLeft) {
@@ -406,7 +419,6 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
         }
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, view);
         _topViewIsOffScreen = YES;
-        [self addTopViewSnapshot];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *key = (side == ECLeft) ? ECSlidingViewTopDidAnchorLeft : ECSlidingViewTopDidAnchorRight;
             [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];

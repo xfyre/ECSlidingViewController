@@ -145,12 +145,6 @@ typedef enum {
  */
 @property (nonatomic, assign) BOOL shouldAdjustChildViewHeightForStatusBar;
 
-/** Specifies if snapshot should use native -[UIScreen snapshotViewAfterScreenUpdates:]. iOS 7 only.
-
- By default, this is set to NO
- */
-@property (nonatomic, assign) BOOL shouldUseNativeSnapshotFeature;
-
 /** Specifies the behavior for the under left width
  
  By default, this is set to ECFullWidth

@@ -330,7 +330,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 
 - (void)anchorTopViewTo:(ECSide)side animations:(void (^)())animations onComplete:(void (^)())complete
 {
-    if (self.shouldUseNativeSnapshotFeature && ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)) {
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(snapshotViewAfterScreenUpdates:)]) {
         self.topViewSnapshot = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
         [self.topViewSnapshot setAutoresizingMask:self.autoResizeToFillScreen];
         [self.topViewSnapshot addGestureRecognizer:self.resetTapGesture];
@@ -384,7 +384,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
 
 - (void)anchorTopViewOffScreenTo:(ECSide)side animations:(void(^)())animations onComplete:(void(^)())complete
 {
-    if (self.shouldUseNativeSnapshotFeature && ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)) {
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(snapshotViewAfterScreenUpdates:)]) {
         self.topViewSnapshot = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
         [self.topViewSnapshot setAutoresizingMask:self.autoResizeToFillScreen];
         [self.topViewSnapshot addGestureRecognizer:self.resetTapGesture];
